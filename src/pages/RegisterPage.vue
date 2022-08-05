@@ -183,13 +183,15 @@ export default {
       try {
         const response = await this.axios.post(
           // "https://test-for-3-2.herokuapp.com/user/Register",
-          this.$root.store.server_domain + "/Register",
+          //this.$root.store.server_domain + "/Register",
+          "http://localhost:3000"+"/Register", //recplace in .env variable
 
           {
             username: this.form.username,
             password: this.form.password
           }
         );
+        console.log(response);
         this.$router.push("/login");
         // console.log(response);
       } catch (err) {
