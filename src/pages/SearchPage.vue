@@ -118,7 +118,7 @@ export default {
     },
     methods: {
         async searchRecipes() {
-            let url = "https://api.spoonacular.com/recipes/complexSearch?";
+            // let url = "https://api.spoonacular.com/recipes/complexSearch?";
             let cuisinesString = this.getStringRep(this.form.selectedCuisines);
             let dietsString = this.getStringRep(this.form.selectedDiets);
             let intolsString = this.getStringRep(this.form.selectedIntols);
@@ -130,36 +130,52 @@ export default {
             this.lastCuisines=localStorage.lastCuisines;
             this.lastDiets=localStorage.lastDiets;
             this.lastIntols=localStorage.lastIntols;
-            url += "query=";
-            url += this.form.searchQuery;
-            url += "&number=";
-            url += this.form.recipesNumber;
-            url += "&cuisine=";
-            url += cuisinesString;
-            url += "&diet=";
-            url += dietsString;
-            url += "&intolerances=";
-            url += intolsString;
-            alert(url)
-            let response = await this.axios.get(url, {
-                params: {
-                    apiKey: "1813b7edcb964e93aee04c4f4dcbdfc7"
-                }
-            });
-            let results=response.data.results;
-            //this.res=results;
-            let nextUrl="https://api.spoonacular.com/recipes/";
-            let detailedRecipes=[];
-            for (let i=0;i<results.length;i++){
-              let finalResponse = await this.axios.get(nextUrl+results[i].id+"/information", {
-                params:{
-                    apiKey: " 1813b7edcb964e93aee04c4f4dcbdfc7"
-                    
-                }
-              });
-              detailedRecipes.push(finalResponse.data);
+            // url += "query=";
+            // url += this.form.searchQuery;
+            // url += "&number=";
+            // url += this.form.recipesNumber;
+            // url += "&cuisine=";
+            // url += cuisinesString;
+            // url += "&diet=";
+            // url += dietsString;
+            // url += "&intolerances=";
+            // url += intolsString;
+            let url="http://localhost:3000/recipes/search/";
+            var cuisinesStringUrl=cuisinesString;
+            var dietsStringUrl=dietsString;
+            var intolsStringUrl=intolsString;
+
+            if (cuisinesString==""){
+              cuisinesStringUrl=null;
             }
-            this.res=detailedRecipes
+            if (dietsString==""){
+              dietsStringUrl=null;
+            }
+            if (intolsString==""){
+              intolsStringUrl=null;
+            }
+            url=url+this.form.searchQuery+"/"+this.form.recipesNumber+"/"+cuisinesStringUrl+"/"+dietsStringUrl+"/"+intolsStringUrl
+            this.res=await this.axios.get(url);
+            this.res=this.res.data;
+            // let response = await this.axios.get(url, {
+            //     params: {
+            //         apiKey: "1813b7edcb964e93aee04c4f4dcbdfc7"
+            //     }
+            // });
+            // let results=response.data.results;
+            // //this.res=results;
+            // let nextUrl="https://api.spoonacular.com/recipes/";
+            // let detailedRecipes=[];
+            // for (let i=0;i<results.length;i++){
+            //   let finalResponse = await this.axios.get(nextUrl+results[i].id+"/information", {
+            //     params:{
+            //         apiKey: " 1813b7edcb964e93aee04c4f4dcbdfc7"
+                    
+            //     }
+            //   });
+            //   detailedRecipes.push(finalResponse.data);
+            // }
+            // this.res=detailedRecipes
             this.searchbtnpressed=true;
 
             if (detailedRecipes.length==0){
