@@ -64,7 +64,11 @@
         <b-form-invalid-feedback
           v-if="$v.form.password.required && !$v.form.password.length"
         >
-          Have length between 5-10 characters long
+        <ul>
+          <li>Have length between 5-10 characters long</li>
+          <li>Contains at least one number</li>
+          <li>Contains at least one special character</li>
+        </ul>
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -221,7 +225,7 @@ export default {
       this.$nextTick(() => {
         this.$v.$reset();
       });
-    }
+    },
   }
 };
 </script>

@@ -3,7 +3,6 @@
     <h1 class="title">Main Page</h1>
     <RecipePreviewList title="Randome Recipes" class="RandomRecipes center" />
     <router-link v-if="!$root.store.username" to="/login" tag="button">You need to Login to vue this</router-link>
-   
    {{ !$root.store.username }}
     <RecipePreviewList
       title="Last Viewed Recipes"
@@ -14,6 +13,7 @@
       }"
       disabled
     ></RecipePreviewList>
+    <RecipePreviewListSearch ></RecipePreviewListSearch>
     <!-- <div
       style="position: absolute;top: 70%;left: 50%;transform: translate(-50%, -50%);"
     >
@@ -24,10 +24,26 @@
 
 <script>
 import RecipePreviewList from "../components/RecipePreviewList";
+import RecipePreviewListSearch from "../components/RecipePreviewListSearch.vue";
 export default {
   components: {
-    RecipePreviewList
+    RecipePreviewList,
+    RecipePreviewListSearch
+  },
+  data(){
+    return{
+      recipes:[]
+    }
+  },
+  mounted(){
+    this.recipes= getRandomRecipes();
+  },
+  methods:{
+    async getRandomRecipes(){
+
+    }
   }
+
 };
 </script>
 
