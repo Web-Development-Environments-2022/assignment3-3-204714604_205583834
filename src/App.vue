@@ -1,17 +1,27 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link :to="{ name: 'main' }">Vue Recipes</router-link>|
-      <router-link :to="{ name: 'search' }">Search</router-link>|
-      {{ !$root.store.username }}
-      <span v-if="!$root.store.username">
-        Guest:
-        <router-link :to="{ name: 'register' }">Register</router-link>|
-        <router-link :to="{ name: 'login' }">Login</router-link>|
-      </span>
-      <span v-else>
-        {{ $root.store.username }}: <button @click="Logout">Logout</button>|
-      </span>
+      <b-navbar  class="fullBar" variant="success">
+            <b-navbar>
+                <router-link :to="{ name: 'main' }">Vue Recipes</router-link>|
+                <router-link :to="{ name: 'search' }">Search</router-link>|
+                <router-link :to="{ name: 'about' }">About</router-link>
+            </b-navbar>
+
+            <b-navbar-nav class="ml-auto">
+              <span class="navbar-text space"> <b>Hello Guest</b> </span>
+              <b-nav-item-dropdown :text="$root.store.username" v-if="$root.store.username" right>
+                  Personal:
+                  <router-link tag="" :to="{ name: 'main' }" @click.native="$root.store.logout">Logout</router-link>
+                  <router-link tag="b-dropdown-item" :to="{ name: 'favorites' }">favorites</router-link>
+                  <router-link tag="b-dropdown-item" :to="{ name: 'MyRecipes' }">My Recipes</router-link>
+                  <router-link tag="b-dropdown-item" :to="{ name: 'myFamilyRecipes' }">My Family Recipes</router-link>
+              </b-nav-item-dropdown>
+              <b-button variant="danger" @click="Logout" v-if="$root.store.username">Logout</b-button>
+              <b-button :to="{ name: 'register' }" variant="danger" @click="register" v-if="!$root.store.username" class="space">Register</b-button>
+              <b-button :to="{ name: 'login' }" variant="danger" @click="login" v-if="!$root.store.username">Login</b-button>   
+            </b-navbar-nav>
+        </b-navbar>
     </div>
     <router-view />
   </div>
@@ -54,6 +64,10 @@ export default {
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #2c3e50;
+}
+
+.space{
+  margin-right: 10px;
 }
 </style>

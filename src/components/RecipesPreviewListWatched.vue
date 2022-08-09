@@ -15,7 +15,7 @@
 <script>
 import RecipePreview from "./RecipePreview.vue";
 export default {
-  name: "RecipePreviewList",
+  name: "RecipePreviewListWatched",
   components: {
     RecipePreview
   },
@@ -37,10 +37,10 @@ export default {
     async updateRecipes() {
       try {
         // const response = await this.axios.get(
-        const response = await this.axios.post(
+        const response = await this.axios.get(
           // this.$root.store.server_domain + "/recipes/random",
           // "https://test-for-3-2.herokuapp.com/recipes/random"
-          "http://localhost:3000" + "/recipes/random",
+          "http://localhost:3000" + "/recipes/getWatched",
 
         );
 
