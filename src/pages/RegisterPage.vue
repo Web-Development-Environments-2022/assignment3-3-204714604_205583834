@@ -104,7 +104,11 @@
         <b-form-invalid-feedback
           v-if="$v.form.password.required && !$v.form.password.length"
         >
-          Have length between 5-10 characters long
+        <ul>
+          <li>Have length between 5-10 characters long</li>
+          <li>Contains at least one number</li>
+          <li>Contains at least one special character</li>
+        </ul>
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -255,15 +259,15 @@ export default {
       try {
         const response = await this.axios.post(
           // "https://test-for-3-2.herokuapp.com/user/Register",
-          // this.$root.store.server_domain + "/Register",
-          "http://localhost:3000" + "/Register",
+          //this.$root.store.server_domain + "/Register",
+          "http://localhost:3000"+"/Register", //recplace in .env variable
 
           {
             username: this.form.username,
             password: this.form.password
           }
         );
-        console.log(response.data);
+        console.log(response);
         this.$router.push("/login");
         // console.log(response);
       } catch (err) {
@@ -293,7 +297,7 @@ export default {
       this.$nextTick(() => {
         this.$v.$reset();
       });
-    }
+    },
   }
 };
 </script>
