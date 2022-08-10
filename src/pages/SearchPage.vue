@@ -76,8 +76,8 @@
     </div>
     <b-row>
       <b-dropdown text="Sort Recipes " v-if="searchbtnpressed">
-        <b-dropdown-item-btn @click="sortArrByKey(res,'preparation')">Sort By Preparation Time</b-dropdown-item-btn>
-        <b-dropdown-item-btn @click="sortArrByKey(res,'aggregateLikes')">Sort By Popularity</b-dropdown-item-btn>
+        <b-dropdown-item-btn @click="sortBy('preparation')">Sort By Preparation Time</b-dropdown-item-btn>
+        <b-dropdown-item-btn @click="sortBy('likes')">Sort By Popularity</b-dropdown-item-btn>
 
       </b-dropdown>
     </b-row>
@@ -85,7 +85,6 @@
     <RecipePreviewListSearch class="recipeprev" :recipes="res"></RecipePreviewListSearch>
     </b-row>
   </div>
-  
 </template>
 
 <script>
@@ -213,17 +212,30 @@ export default {
 
           }
         },
-        sortArrByKey(arr,key){
-          if (key=='preparation'){
-          const sorted = arr.sort((a, b) => a.readyInMinutes.localeCompare(b.readyInMinutes))
+
+        sortBy(type){
+          function compareByLikes(x, y) {
+          if (x.popularity < y.popularity) return 1;
+          if (x.popularity > y.popularity) return -1;
+          return 0;
+          }
+          function compareByTime(x, y) {
+          if (x.readyInMinutes < y.readyInMinutes) return 1;
+          if (x.readyInMinutes > y.readyInMinutes) return -1;
+          return 0;
+          }
+          if (type=="likes"){
+            return this.res.sort(compareByLikes);
           }
           else{
-          const sorted = arr.sort((a, b) => a.aggregateLikes.localeCompare(b.aggregateLikes))
-
+            return this.res.sort(compareByTime);
           }
+      },
 
+      
 
-        }
+      
+ 
     },
     components: {RecipePreviewListSearch }
 }
