@@ -3,10 +3,11 @@
     <div class="recipe-body">
       <b-container class="recipebody">
         <b-row>
+          {{temp}}
           <b-col>
             <h4>{{recipe.title}}</h4>
             <p>Preparation Time: {{recipe.readyInMinutes}} minutes</p>
-            <p>Number Of Likes: {{recipe.aggregateLikes}}</p>
+            <p>Number Of Likes: {{recipe.popularity}}</p>
               <ul class="icon_wrapper_new">
                 <li><img v-if="image_load&&recipe.vegan" src="../images/veganSymbol.jpg" class="icon" /></li>
                 <li><img v-if="image_load&&recipe.vegetarian" src="../images/vegeterian_symbol.jpg" class="icon" /></li>
@@ -41,7 +42,8 @@
             return {
             image_load: false,
             isWatched:false,
-            isFavorite:false
+            isFavorite:false,
+            temp:""
             };
         },
         props: {
@@ -52,8 +54,14 @@
         },
         methods:{
           //add to the DB
-          makeFavorite(){
-            this.isFavorite=true;
+          async makeFavorite(){
+            let url="http://localhost:3000/users/favorites/";
+            this.temp=await this.axios.post(url,{
+              recipe_id:this.recipe.id,
+              withCredentials: true
+            })
+            alert(this.temp)
+
           }
         } 
     }
