@@ -233,7 +233,13 @@ export default {
       },
       password: {
         required,
-        length: (p) => minLength(5)(p) && maxLength(10)(p)
+        length: (p) => minLength(5)(p) && maxLength(10)(p),
+        isContainsNumber: function(value){
+          return /[0-9]/.test(value)
+        },
+        isContainsSpecial: function(value){
+          return /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(value)
+        },
       },
       confirmedPassword: {
         required,
@@ -255,6 +261,14 @@ export default {
       const { $dirty, $error } = this.$v.form[param];
       return $dirty ? !$error : null;
     },
+    // isContainsSpecial(){
+    //   const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    //   return specialChars.test(this.password);
+    // },
+    // isContainsNumber(){
+    //   const specialNumbers = /[0-9]/;
+    //   return specialNumbers.test(this.password);
+    // },
     async Register() {
       try {
         const response = await this.axios.post(
@@ -264,7 +278,12 @@ export default {
 
           {
             username: this.form.username,
-            password: this.form.password
+            firstName:  this.form.firstName,
+            lastName: this.form.lastName,
+            country: this.form.country,
+            password: this.form.password,
+            email: this.form.email,
+            profilePic: this.form.profilePic
           }
         );
         console.log(response);
