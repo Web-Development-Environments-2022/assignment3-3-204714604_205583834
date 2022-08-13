@@ -20,7 +20,12 @@ export default {
 //     };
 //   },
   props:{
-    recipes:Array
+    recipes:Array,
+    username:{
+      type:String,
+      required:false,
+      default:""
+      }
     }
   }
 

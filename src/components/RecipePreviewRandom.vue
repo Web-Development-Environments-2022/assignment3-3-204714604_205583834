@@ -17,7 +17,7 @@
             <router-link
               :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
               class="recipe-preview">
-              <img v-if="image_load" :src="recipe.image" class="recipe-image" width="100%"/>
+              <img v-if="image_load" :src="recipe.image" class="recipe-image" width="100%" @click="makeWatched"/>
             </router-link>  
           </b-row>
         </b-col>
@@ -39,7 +39,7 @@
             <img v-if="image_load&&!isFavorite" src="../images/before_favorite.jpg" class="icon"  @click="makeFavorite" />
           </b-row>
           <b-row>
-            <img v-if="image_load&&isFavorite" src="../images/after_favorite.png" class="icon" />
+            <img v-if="image_load&&isFavorite" src="../images/after_favorite.png" class="icon"/>
           </b-row>
         
         </b-col>
@@ -79,12 +79,17 @@
             this.axios.get(this.recipe.image).then((i) => {
             this.image_load = true;
             });
+            this.username=localStorage.getItem("username");
+            this.checkWatched();
+            this.checkFavorite();
+            this.image_load = true;
         },
         data() {
             return {
             image_load: false,
             isWatched:false,
-            isFavorite:false
+            isFavorite:false,
+            username:""
             };
         },
         props: {
@@ -95,16 +100,58 @@
         },
         methods:{
           //add to the DB
-          async makeFavorite(){
-            let url="http://localhost:3000/users/favorites";
+            async makeFavorite(){
+            let url="http://127.0.0.1:3000/users/favorites";
             if (!this.isFavorite){
               const response=await this.axios.post(url,{
               recipeId:this.recipe.id,
+              username:this.username
             });
-            this.isFavorite=true;
+              this.isFavorite=true;
               }
               
+            },
+          async makeWatched(){
+            let url="http://127.0.0.1:3000/users/addWatched";
+            if (!this.isWatched){
+              const response=await this.axios.post(url,{
+              recipe_id:this.recipe.id,
+              username:this.username
+            });
+              this.isWatched=true;
+
+              }
+            },
+          async checkWatched(){
+            let url="http://127.0.0.1:3000/users/getWatched/";
+            url=url+this.username+'/'+this.recipe.id;
+            let response=await this.axios.get(url);
+            if (response.data){
+              this.isWatched=true;
             }
+            else{
+              this.isWatched=false;
+            }
+
+            // for(let i=0;i<watchedRecipes.length;i++){
+            //   if (this.recipe.id===watchedRecipes[i].id){
+            //     this.isWatched=true;
+            //   }
+            // }
+
+          },
+          async checkFavorite(){
+            let url="http://127.0.0.1:3000/users/getFavorites/";
+            url=url+this.username+'/'+this.recipe.id;
+            let response=await this.axios.get(url);
+            if (response.data){
+              this.isFavorite=true;
+            }
+            else{
+              this.isFavorite=false;
+            }
+          }
+
         }
     }
 

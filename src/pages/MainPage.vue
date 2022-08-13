@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-
+    {{watchedRecipes}}
     <!-- <h1 class="title">Main Page</h1> -->
     <!-- <RecipePreviewList title="Randome Recipes" class="RandomRecipes center" />
     <router-link v-if="!$root.store.username" to="/login" tag="button">You need to Login to vue this</router-link>
@@ -21,19 +21,20 @@
             <h2>Explore this recipes</h2>
           </b-row>
           <b-row>
-            <RecipePreviewListRandom :recipes="this.randomRecipes"></RecipePreviewListRandom>
+            <b-button @click="generateRandom">Generate new Recipes</b-button>
           </b-row>
           <b-row>
-            <b-button @click="generateRandom">Generate new Recipes</b-button>
+            <RecipePreviewListRandom :recipes="this.randomRecipes"></RecipePreviewListRandom>
           </b-row>
         </b-col>
         <b-col v-if="$root.store.username" cols="4"></b-col>
         <b-col v-if="$root.store.username" cols="4">
           <b-row>
             <h2>Last watched recipes</h2>
+            <b-button @click="getLastWatched"></b-button>
           </b-row>
           <b-row>
-            <RecipePreviewListRandom :recipes="this.randomRecipes" class="col"></RecipePreviewListRandom>
+            <RecipePreviewListRandom :recipes="this.watchedRecipes" class="col"></RecipePreviewListRandom>
           </b-row>
         </b-col>
         <b-col cols="3" v-if="!$root.store.username"></b-col>
@@ -80,6 +81,7 @@
 </template>
 
 <script>
+import { AlertPlugin } from "bootstrap-vue";
 import RecipePreviewList from "../components/RecipePreviewList";
 import RecipePreviewListRandom from '../components/RecipePreviewListRandom.vue';
 export default {
@@ -92,20 +94,41 @@ export default {
   data(){
     return{
       randomRecipes:[],
+      watchedRecipes:[],
       form:{
         username:"",
         password:""
-      }
+      },
+      username:"",
+      res:[]
     }
   },
   mounted(){
     this.randomRecipes=this.getRandomRecipes();
+    // this.watchedRecipes=this.getLastWatched();
+
   },
   methods:{
-    async generateRandom(){
+     generateRandom(){
+      alert("need to generate random recipes")
 
     },
     async getLastWatched(){
+      this.username=localStorage.getItem("username");
+      let url="http://localhost:3000/users/getLastThreeViewed/";
+      url=url+this.username;
+      const temp=[]
+      var recipes_ids=await this.axios.get(url);
+      recipes_ids=recipes_ids.data;
+      this.res=recipes_ids
+      for (let i=0;i<recipes_ids.length;i++){
+        let secUrl="http://localhost:3000/recipes/"+recipes_ids[i].recipe_id;
+        let detailedRecipe=await this.axios.get(secUrl)
+        temp.push(detailedRecipe)
+      }
+      this.watchedRecipes=temp;
+
+    
 
     },
     async loginUser(){
