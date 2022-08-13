@@ -2,7 +2,7 @@
 
     <div class="recipe-body">
       <b-container class="recipebody">
-        <!-- <b-row>
+        <b-row>
         <b-col cols="10">
           <b-row>
             <p>{{recipe.title}}</p>
@@ -40,11 +40,11 @@
           </b-row>
           <b-row>
             <img v-if="image_load&&isFavorite" src="../images/after_favorite.png" class="icon" />
-          </b-row> -->
+          </b-row>
         
-        <!-- </b-col> -->
-        <!-- </b-row> -->
-        <b-row>
+        </b-col>
+        </b-row>
+        <!-- <b-row>
           {{temp}}
           <b-col cols="4">
             <h4>{{recipe.title}}</h4>
@@ -66,7 +66,7 @@
             </router-link>         
           </b-col>
 
-        </b-row>
+        </b-row> -->
 
       </b-container>
     </div>
