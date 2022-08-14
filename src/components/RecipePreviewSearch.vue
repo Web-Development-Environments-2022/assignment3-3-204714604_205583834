@@ -2,7 +2,6 @@
 
     <div class="recipe-body">
       <b-container class="recipebody">
-        <p>{{res}}</p>
         <!-- <b-row>
         <b-col cols="10">
           <b-row>
@@ -47,17 +46,46 @@
         <!-- </b-row> -->
         <b-row>
           <b-col cols="4">
+            <b-row>
             <h4>{{recipe.title}}</h4>
+            </b-row>
+            <b-row>
             <p>Preparation Time: {{recipe.readyInMinutes}} minutes</p>
+            </b-row>
+            <b-row>
             <p>Number Of Likes: {{recipe.popularity}}</p>
-              <ul class="icon_wrapper_new">
+            <b-row>
+              <!-- {{JSON.stringify(recipe.instructions)}} -->
+            </b-row>
+            </b-row>
+              <!-- <ul class="icon_wrapper_new">
                 <li><img v-if="image_load&&recipe.vegan" src="../images/veganSymbol.jpg" class="icon" /></li>
                 <li><img v-if="image_load&&recipe.glutenFree" src="../images/gluten_free_image.png" class="icon"></li>
                 <li><img v-if="image_load&&recipe.vegetarian" src="../images/vegeterian_symbol.jpg" class="icon" /></li>
                 <li><img v-if="image_load&&isWatched" src="../images/watchedSymbol.png" class="icon" /></li>
                 <li><img v-if="image_load&&!isFavorite" src="../images/before_favorite.jpg" class="icon"  @click="makeFavorite" /></li>
                 <li><img v-if="image_load&&isFavorite" src="../images/after_favorite.png" class="icon" /></li>
-              </ul>   
+              </ul>    -->
+              <b-row>
+              <b-col>
+                <img v-if="image_load&&recipe.vegan" src="../images/veganSymbol.jpg" class="icon" />
+              </b-col>
+              <b-col>
+                <img v-if="image_load&&recipe.glutenFree" src="../images/gluten_free_image.png" class="icon" />
+              </b-col>
+              <b-col>
+                <img v-if="image_load&&recipe.vegetarian" src="../images/vegeterian_symbol.jpg" class="icon" />
+              </b-col>
+                            <b-col>
+                <img v-if="image_load&&isWatched" src="../images/watchedSymbol.png" class="icon" />
+              </b-col>
+                            <b-col>
+                <img v-if="image_load&&!isFavorite" src="../images/before_favorite.jpg" class="icon" @click="makeFavorite" />
+              </b-col>
+                            <b-col>
+                <img v-if="image_load&&isFavorite" src="../images/after_favorite.png" class="icon" />
+              </b-col>
+              </b-row>
           </b-col>
           <b-col cols="8">
             <router-link
@@ -103,6 +131,9 @@
         methods:{
           //add to the DB
           async makeFavorite(){
+            if(this.username==null){
+              return;
+            }
             let url="http://127.0.0.1:3000/users/favorites";
             if (!this.isFavorite){
               const response=await this.axios.post(url,{
@@ -125,6 +156,9 @@
               }
             },
           async checkWatched(){
+            if(this.username==null){
+              return;
+            }
             let url="http://127.0.0.1:3000/users/getWatched/";
             url=url+this.username+'/'+this.recipe.id;
             let response=await this.axios.get(url);
@@ -143,6 +177,9 @@
 
           },
           async checkFavorite(){
+            if(this.username==null){
+              return;
+            }
             let url="http://127.0.0.1:3000/users/getFavorites/";
             url=url+this.username+'/'+this.recipe.id;
             let response=await this.axios.get(url);

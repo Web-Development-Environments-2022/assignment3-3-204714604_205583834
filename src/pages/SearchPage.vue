@@ -6,41 +6,88 @@
       <b-form @submit.prevent="searchRecipes">
         <!--Cover Image Section-->
         <b-row>
-          <b-col>
             <b-row class="section" id="coverImgSection">
               <img src="../images/cover_search_image.webp" id="coverSearchImg">
             </b-row>
-          </b-col>
-          <b-col class="user-side">
+          <!-- <b-col class="user-side">
             <h1>Last Search</h1>
             <p><span class="last-search-headings">Search Query: </span>{{lastSearch}}</p>
             <p><span class="last-search-headings">Cusines: </span>{{lastCuisines}}</p>
             <p><span class="last-search-headings">Diets: </span>{{lastDiets}}</p>
             <p><span class="last-search-headings">Intolerances: </span>{{lastIntols}}</p>
-          </b-col>
+          </b-col> -->
         </b-row>
 
         <!--Query Section-->
         <b-row id="querySection" class="section">
           <b-input v-model="form.searchQuery" type="text" placeholder="Enter your query" id="queryInput" />
           <b-button type="submit" variant="primary" id="submitbtn">Search</b-button>
+
         </b-row>
         <!--Filters Section-->
+        <b-row>
+        <b-col cols="8">
         <b-row class="section" id="filtersSection">
+              <b-col cols=2>
             <b-dropdown text="Cuisines" class="dropdwn-filters">
               <b-dropdown-item-btn v-for="cuis in cuisinesData" :key="cuis" @click="updateFilterList('cuisines',cuis)">{{cuis}}</b-dropdown-item-btn>
             </b-dropdown>
+              </b-col>
+            <b-col cols=2>
             <b-dropdown text="Diets" class="dropdwn-filters">
               <b-dropdown-item-btn v-for="diet in dietsData" :key="diet" @click="updateFilterList('diets',diet)">{{diet}}</b-dropdown-item-btn>
             </b-dropdown>
+            </b-col>
+            <b-col cols=2>
             <b-dropdown text="intolerances" class="dropdwn-filters">
               <b-dropdown-item-btn v-for="intol in intolerancesData" :key="intol" @click="updateFilterList('intolerances',intol)">{{intol}}</b-dropdown-item-btn>
             </b-dropdown>
+            </b-col>
+            <b-col cols="1"></b-col>
+            <b-col cols=2>
             <b-form-select :options="[5,10,15]" v-model="form.recipesNumber" class="recipesNumber"></b-form-select>
+        </b-col>  
         </b-row>
+        <b-row>
+          <b-col cols=2>
+            <ul class="filters-ul">
+              <li v-for="cuis in form.selectedCuisines" :key="cuis" class="filters-li">{{cuis}}</li>
+            </ul>
+          </b-col>
+          <b-col cols=2>
+            <ul class="filters-ul">
+              <li v-for="diet in form.selectedDiets" :key="diet" class="filters-li">{{diet}}</li>
+            </ul>            
+          </b-col>
+          <b-col cols=2>
+            <ul class="filters-ul">
+              <li v-for="intol in form.selectedIntols" :key="intol" class="filters-li">{{intol}}</li>
+            </ul>
+          </b-col>
+        </b-row>
+        </b-col>
+            <b-col class="user-side" cols="4" >
+            <b-row>
+              <h1>Last Search</h1>
+            </b-row>
+            <b-row>
+            <p><span class="last-search-headings">Search Query: </span>{{lastSearch}}</p>
+            </b-row>
+            <b-row>
+            <p><span class="last-search-headings">Cusines: </span>{{lastCuisines}}</p>
+            </b-row>
+            <b-row>
+            <p><span class="last-search-headings">Diets: </span>{{lastDiets}}</p>
+            </b-row>  
+            <b-row>
+            <p><span class="last-search-headings">Intolerances: </span>{{lastIntols}}</p>
+            </b-row>
+          </b-col>
+          </b-row>
       </b-form>
+      
     </div>
-    <div id="filters-wrapper" v-if="!searchbtnpressed">
+    <!-- <div id="filters-wrapper" v-if="!searchbtnpressed">
     <b-row>
       <b-col>
         <b-row>
@@ -73,7 +120,7 @@
         </b-row>
       </b-col>
     </b-row>
-    </div>
+    </div> -->
     <b-row>
       <b-dropdown text="Sort Recipes " v-if="searchbtnpressed">
         <b-dropdown-item-btn @click="sortBy('preparation')">Sort By Preparation Time</b-dropdown-item-btn>
@@ -156,28 +203,9 @@ export default {
             url=url+this.form.searchQuery+"/"+this.form.recipesNumber+"/"+cuisinesStringUrl+"/"+dietsStringUrl+"/"+intolsStringUrl
             this.res=await this.axios.get(url);
             this.res=this.res.data;
-            // let response = await this.axios.get(url, {
-            //     params: {
-            //         apiKey: "1813b7edcb964e93aee04c4f4dcbdfc7"
-            //     }
-            // });
-            // let results=response.data.results;
-            // //this.res=results;
-            // let nextUrl="https://api.spoonacular.com/recipes/";
-            // let detailedRecipes=[];
-            // for (let i=0;i<results.length;i++){
-            //   let finalResponse = await this.axios.get(nextUrl+results[i].id+"/information", {
-            //     params:{
-            //         apiKey: " 1813b7edcb964e93aee04c4f4dcbdfc7"
-                    
-            //     }
-            //   });
-            //   detailedRecipes.push(finalResponse.data);
-            // }
-            // this.res=detailedRecipes
             this.searchbtnpressed=true;
 
-            if (detailedRecipes.length==0){
+            if (this.res.length==0){
               alert("No Recipes Were Found")
             }
             

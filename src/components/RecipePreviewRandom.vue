@@ -123,6 +123,9 @@
               }
             },
           async checkWatched(){
+            if (this.username==null){
+              return;
+            }
             let url="http://127.0.0.1:3000/users/getWatched/";
             url=url+this.username+'/'+this.recipe.id;
             let response=await this.axios.get(url);
@@ -141,6 +144,9 @@
 
           },
           async checkFavorite(){
+            if (this.username==null){
+              return;
+            }
             let url="http://127.0.0.1:3000/users/getFavorites/";
             url=url+this.username+'/'+this.recipe.id;
             let response=await this.axios.get(url);
