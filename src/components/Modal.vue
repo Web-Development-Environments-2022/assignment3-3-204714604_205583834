@@ -115,7 +115,7 @@
             <slot name="footer">
               <button
                 class="modal-submit-button"
-                @click="$emit('close')"
+                @click="addNewRecipe()"
               >Submit</button>
             </slot>
           </div>
@@ -151,35 +151,35 @@ export default {
     },
     methods: {
         async addNewRecipe(){
+            this.$emit('close');
             if(this.dishes <= 0)
                 return false;
             if(this.name === "")
                 return false;
-            if(url === "")
+            if(this.url === "")
                 return false;
-            if(ingredients === "")
+            if(this.ingredients === "")
                 return false;
-            if(cooktime <= 0)
+            if(this.cooktime <= 0)
                 return false;
-            if(instructions === "")
+            if(this.instructions === "")
                 return false;
+
             const response = await this.axios.post(
-                    "http://localhost:3000" + "/recipes.js",
+                    "http://localhost:3000" + "/recipes/addPrivateRecipe",
                     
                     {
-                        username: this.user_id,
+                        user_id: this.user_id,
                         dishesNumber: this.DishesNumber,
                         instructions: this.Instructions,
-                        GlutenFree: this.GlutenFree,
-                        RecipePicture: this.RecipePicture,
-                        CookingTime: this.CookingTime,
-                        Veganism: this.Veganism,
-                        Vegeterian: this.Vegeterian,
-                        RecipeName: this.RecipeName
+                        gluten_free: this.GlutenFree,
+                        recipePic: this.RecipePicture,
+                        cookingTime: this.CookingTime,
+                        vegan: this.Veganism,
+                        vegetarian: this.Vegeterian,
+                        recipeName: this.RecipeName
                     }
                 );
-                this.$nextTick(() => {
-                this.$bvModal.hide('modal-prevent-closing')})
             }
         }
 }
