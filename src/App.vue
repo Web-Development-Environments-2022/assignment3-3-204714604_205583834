@@ -17,6 +17,14 @@
                   <router-link tag="b-dropdown-item" :to="{ name: 'favorites' }">favorites</router-link>
                   <router-link tag="b-dropdown-item" :to="{ name: 'MyRecipes' }">My Recipes</router-link>
                   <router-link tag="b-dropdown-item" :to="{ name: 'myFamilyRecipes' }">My Family Recipes</router-link>
+                  <b-button id="show-modal" @click="showModal = true">New Recipe</b-button>
+                  <Teleport to="body">
+                    <modal :show="showModal" @close="showModal = false">
+                      <template #header>
+                        <h3>New Recipe</h3>
+                      </template>
+                    </modal>
+                </Teleport>
               </b-nav-item-dropdown>
               <b-button variant="danger" @click="Logout" v-if="$root.store.username">Logout</b-button>
               <b-button :to="{ name: 'register' }" variant="danger" @click="register" v-if="!$root.store.username" class="space">Register</b-button>
@@ -34,7 +42,16 @@
 </template>
 
 <script>
+import Modal from './components/Modal.vue'
 export default {
+  components: {
+    Modal
+  },
+  data() {
+    return {
+      showModal: false
+    }
+  },
   name: "App",
   methods: {
     Logout() {
@@ -72,6 +89,13 @@ export default {
 
 #nav a.router-link-exact-active {
   color: #2c3e50;
+}
+
+#show-modal {
+  font-weight: bold;
+  color: #2c3e50;
+  background-color: white;
+  border: 0px;
 }
 
 .space{
