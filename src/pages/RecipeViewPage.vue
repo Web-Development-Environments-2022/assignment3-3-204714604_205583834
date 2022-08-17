@@ -1,5 +1,10 @@
 <template>
   <div class="container">
+        <b-card>
+          <b-card-header>
+            <h2>{{recipe.title}}</h2>
+          </b-card-header>
+          <b-card-body>
     <b-container>
       <b-row>
         <b-col>
@@ -22,8 +27,6 @@
               <li v-if="!recipe.vegetarian"><p><strong>Vegetarian:</strong>&#x274C;</p></li>
               <li v-if="recipe.isClicked"><p><strong>Watched Before:</strong>&#x2705;</p></li>
               <li v-if="!recipe.isClicked"><p><strong>Watched Before:</strong>&#x274C;</p></li>
-              <li v-if="recipe.isClicked"><p><strong>Watched Before:</strong>&#x2763;</p></li>
-              <li v-if="!recipe.isClicked"><p><strong>Watched Before:</strong>&#x2763;</p></li>   
             </ul>
           </b-card-text>
         </b-card-body>
@@ -37,18 +40,10 @@
         <b-card-body>
           <b-card-text>
             <ul>
-                <li>
-                    300 g (10 oz) plain flour
-                </li>
-                <li>
-                    100 g (3½ oz) butter
-                </li>
-                <li>
-                    1 tsp salt
-                </li>
-                <li>
-                    Honey or date syrup
-                </li>
+              <li
+                v-for="(r, index) in recipe.extendedIngredients"
+                :key="index + '_' + r.id"
+              ><strong>{{r.name}}:</strong> {{r.amount}} {{r.unit}}</li>
             </ul>
           </b-card-text>
         </b-card-body>
@@ -61,30 +56,7 @@
       <b-collapse id="accordion-3" accordion="my-accordion" role="tabpanel">
         <b-card-body>
           <b-card-text>
-            <ol>
-                <li>
-                    Pour 500 ml (16 fl oz) of water into a large pan. Add the salt and 25 g (1 oz) of the butter. Bring gently to the boil. Once it comes to the boil remove from the heat.
-                </li>
-                    Sieve the flour and add it to the pan. With a wooden spoon, work the dough until it becomes smooth and free of lumps. It should reach a stage where it is no longer sticky and has the consistency of plasticene.
-                <li>
-                    Add 250 ml ( 8 fl oz) of water to the pan and bring it gently to the boil. Break the dough up a little and cook gently for 15-20 minutes stirring occasionally.
-                </li>
-                <li>
-                    If all the water has not been absorbed after 20 minutes simply pour off any excess and cook for a few more minutes until there is no sign of any water.
-                </li>
-                <li>
-                    Work the dough once more with a wooden spoon until it is smooth. This time it will stay sticky!
-                </li>
-                <li>
-                    Melt the remaing butter and put a tbsp or two on a plate. Spread it around them place the sticky dough on top.
-                </li>
-                <li>
-                    Fold the edge of the dough from the bottom to the top, turning the plate as you do so. The dough will lose all its stickiness. Once the dough is roughly circular, turn it over and smooth it with your hands.
-                </li>
-                <li>
-                    Create a depression in the middle of the dough. Drizzle butter into the depression and over the aseeda. Finally drizzle some honey or date syrup around the outside.
-                </li>
-            </ol>
+            {{recipe.instructions}}
           </b-card-text>
         </b-card-body>
       </b-collapse>
@@ -95,57 +67,78 @@
     <b-row>
     <img :src="recipe.image" class="recipe-image" width="100%"/>
     </b-row>
-    <b-row height="100px">
+    <b-row>
+      <b-col>
+        <img src="../images/watchedSymbol.png">
+      </b-col>
+      <b-col v-if="!recipe.isFavorite">
+        <img src="../images/before_favorite.jpg" @click="makeFavorite" width="100%">
+
+      </b-col>
+      <b-col   v-if="recipe.isFavorite">
+        <img src="../images/after_favorite.png" width="100%">
+
+      </b-col>
     </b-row>
   </b-col>
   </b-row>
     </b-container>
+    </b-card-body>
+    </b-card>
 
-    <p>{{recipe}}</p>
-    <div v-if="recipe">
-      <div class="recipe-header mt-3 mb-4">
+    <!-- <p>{{recipe}}</p> -->
+    <!-- <div v-if="recipe"> --> 
+      <!-- <div class="recipe-header mt-3 mb-4">
         <h1>{{ recipe.title }}</h1>
         <img :src="recipe.image" class="center" />
-      </div>
-      <div class="recipe-body">
-        <div class="wrapper">
-          <div class="wrapped">
+      </div> -->
+      <!-- <div class="recipe-body"> -->
+        <!-- <div class="wrapper"> -->
+          <!-- <div class="wrapped">
             <div class="mb-3">
               <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
               <div>Likes: {{ recipe.aggregateLikes }} likes</div>
             </div>
             Ingredients:
             <ul>
-              <li
-                v-for="(r, index) in recipe.extendedIngredients"
-                :key="index + '_' + r.id"
-              >
-                {{ r.original }}
-              </li>
+              
             </ul>
-          </div>
-          <div class="wrapped">
+          </div> -->
+          <!-- <div class="wrapped">
             Instructions:
             <ol>
               <li v-for="s in recipe._instructions" :key="s.number">
                 {{ s.step }}
               </li>
             </ol>
-          </div>
-        </div>
-      </div>
+          </div> -->
+        <!-- </div> -->
+      <!-- </div> -->
       <!-- <pre>
       {{ $route.params }}
       {{ recipe }}
     </pre
       > -->
-    </div>
+    <!-- </div> -->
   </div>
 </template>
 
 <script>
 export default {
   name:'recipe',
+  methods:{
+                async makeFavorite(){
+            let url="http://127.0.0.1:3000/users/favorites";
+            if (!this.isFavorite){
+              const response=await this.axios.post(url,{
+              recipeId:this.recipe.id,
+              username:this.$root.store.username
+            });
+              this.isFavorite=true;
+              }
+              
+            }
+  },
   mounted() {
     this.axios.get(this.recipe.image).then((i) => {
     this.image_load = true;
@@ -161,12 +154,16 @@ export default {
   async created() {
     try {
       let response;
+      let temp=this.$root.store.username;
+      if (temp==undefined){
+        temp="null";
+      }
       // response = this.$route.params.response;
       try {
         response = await this.axios.get(
           // "https://test-for-3-2.herokuapp.com/recipes/info",
           // this.$root.store.server_domain + "/recipeExtendedInfo",
-              this.$root.store.server_domain +"/recipes"+ "/recipeExtendedInfo/"+this.$route.params.recipeId+"/"+this.$root.store.username
+              this.$root.store.server_domain +"/recipes"+ "/recipeExtendedInfo/"+this.$route.params.recipeId+"/"+temp
               // ,
           // {
           //   params: { id: this.$route.params.recipeId,

@@ -23,7 +23,7 @@
         </b-col>
         <b-col cols="1"></b-col>
         <b-col cols="1">
-          <b-row>
+          <b-row> 
             <img v-if="image_load&&recipe.vegan" src="../images/veganSymbol.jpg" class="icon" />
           </b-row>
           <b-row>
