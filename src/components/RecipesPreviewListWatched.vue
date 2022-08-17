@@ -40,7 +40,7 @@ export default {
         const response = await this.axios.get(
           // this.$root.store.server_domain + "/recipes/random",
           // "https://test-for-3-2.herokuapp.com/recipes/random"
-          "http://localhost:3000" + "/recipes/getWatched",
+          this.$root.store.server_domain + "/recipes/getWatched",
 
         );
 

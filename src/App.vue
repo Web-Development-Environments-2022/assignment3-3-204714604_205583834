@@ -28,6 +28,12 @@
               <b-button variant="danger" @click="Logout" v-if="$root.store.username">Logout</b-button>
               <b-button :to="{ name: 'register' }" variant="danger" @click="register" v-if="!$root.store.username" class="space">Register</b-button>
               <b-button :to="{ name: 'login' }" variant="danger" @click="login" v-if="!$root.store.username">Login</b-button>   
+              <b-button @click="login" v-if="!$root.store.username">Login</b-button>
+
+
+
+
+
             </b-navbar-nav>
         </b-navbar>
     </div>
@@ -73,6 +79,7 @@ export default {
 
 #nav {
   padding: 30px;
+  
 }
 
 #nav a {

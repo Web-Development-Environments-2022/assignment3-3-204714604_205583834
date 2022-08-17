@@ -1,18 +1,17 @@
 <template>
     <b-container>
-        <!-- <h3 v-if="recipes.length!=0">Search Results</h3> -->
         <b-row v-for="recipe in recipes" :key="recipe.id">
-            
-            <RecipePreviewSearch :recipe="recipe" class="recipePrev"></RecipePreviewSearch>
+            <RecipePreviewRandom :recipe="recipe" class="recipePrev"></RecipePreviewRandom>
         </b-row>
     </b-container>
 </template>
 <script>
+import RecipePreviewRandom from "./RecipePreviewRandom.vue";
 import RecipePreviewSearch from "./RecipePreviewSearch.vue";
 export default {
-  name: "RecipePreviewListSearch",
+  name: "RecipePreviewListRandom",
   components: {
-    RecipePreviewSearch
+    RecipePreviewRandom
 },
 //   data(){
 //     return{
@@ -20,12 +19,7 @@ export default {
 //     };
 //   },
   props:{
-    recipes:Array,
-    username:{
-      type:String,
-      required:false,
-      default:""
-      }
+    recipes:Array
     }
   }
 
