@@ -67,8 +67,13 @@ Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false;
 
+const api=axios.create({
+  withCredentials:true,
+  base_url:"http://localhost:3000"
+})
 const shared_data = {
   username: localStorage.username,
+  server_domain:"http://localhost:3000",
   login(username) {
     localStorage.setItem("username", username);
     this.username = username;
@@ -88,6 +93,7 @@ new Vue({
   data() {
     return {
       store: shared_data,
+      apiReq:api
     };
   },
   methods: {
