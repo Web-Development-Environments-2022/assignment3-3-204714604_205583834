@@ -1,8 +1,7 @@
 <template>
     <div>
         <div>
-
-            <!------------------------------- About us ------------------------------->
+                <!------------------------------- About us ------------------------------->
                 <b-card
                 border-variant="success"
                 header="About Us"
@@ -19,7 +18,6 @@
                     </b-card-text>
                 </b-card>
                 <br>
-
             <b-card-group deck>
 
                 <!------------------------------- Daniel Website ------------------------------->
@@ -31,7 +29,7 @@
                 header-text-variant="white"
                 align="center"
                 >
-                    <img src="../images/pacovid.jpeg" width= 100%>
+                    <img src="../images/BGU.jpeg" width= 100%>
                     <b-card-text>
                         In this exercise, I designed a website for the elderly. 
                         <br>
@@ -40,9 +38,8 @@
                         You are welcome to take a look at my website and learn more about this important character in Israeli history.
                     </b-card-text>
                     <div class="card-body">
-                        <a href="#" class="card-link">Visit</a>
+                        <a href="https://web-development-environments-2022.github.io/204714604/" class="card-link">Visit</a>
                     </div>
-                    
                 </b-card>
 
                 <!------------------------------- PaCovid Website ------------------------------->
@@ -61,13 +58,12 @@
                         Let's save the world!
                     </b-card-text>
                     <div class="card-body">
-                        <a href="#" class="card-link">Visit</a>
+                        <a href="https://web-development-environments-2022.github.io/assignment2-205583834_204714604/" class="card-link">Visit</a>
                     </div>
                 </b-card>
 
                 <!------------------------------- Snir Website ------------------------------->
                 <b-card 
-                
                 style="max-width: 40rem;"
                 border-variant="success"
                 header="Snir's Website"
@@ -75,7 +71,7 @@
                 header-text-variant="white"
                 align="center"
                 > 
-                    <img src="../images/pacovid.jpeg" width= 100%>
+                    <img src="../images/poter.jpeg" width= 100%>
                     <b-card-text>
                         In this exercise, I designed a website for the elderly. 
                         <br>
@@ -84,11 +80,12 @@
                         You are welcome to take a look at my website and learn more about this character.
                     </b-card-text>
                     <div class="card-body">
-                        <a href="#" class="card-link">Visit</a>
+                        <a href="https://web-development-environments-2022.github.io/205583834/" class="card-link">Visit</a>
                     </div>
                 </b-card>
             </b-card-group>
                 <br>
+
                 <!------------------------------- Vision ------------------------------->
                 <b-card
                 border-variant="success"
